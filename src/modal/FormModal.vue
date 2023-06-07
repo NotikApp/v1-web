@@ -76,6 +76,7 @@ export default {
                 this.addNoteAction({title: this.title, text: this.text, important: this.isImportant, tags: this.tagResult})
                 this.text = ''
                 this.title = ''
+                this.tag = ''
                 Vue.notify({
                     title: 'Notik',
                     text: 'New note have been successfully posted!'
