@@ -79,7 +79,7 @@ export default {
                 this.tag = ''
                 Vue.notify({
                     title: 'Notik',
-                    text: 'New note have been successfully posted!'
+                    text: 'New note have been successfully posted'
                 })
                 this.$emit('close')
             }
