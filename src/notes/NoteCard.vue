@@ -1,15 +1,17 @@
 <template>
   <div class="mt-2 mb-5">
-    <div class="box mr-2 ml-2" :class=" note.important ? 'red' : ''" style="height: 250px; width: 300px; cursor: pointer;">
-        <b-field>
-            <b-tag type="is-primary"
-                   aria-close-label="Close tag">
-                {{ note.tags }}
-            </b-tag>
-        </b-field>
-      <h3 class="title is-4 mb-5">{{note.title}}</h3>
-      <div class="mt-5" style="min-height: 90px">
-        {{getBody()}}
+    <div class="box mr-2 ml-2" :class=" note.important ? 'green' : ''" style="height: 250px; width: 300px; cursor: pointer;">
+      <div @click="openFull">
+          <b-field>
+              <b-tag type="is-primary"
+                     aria-close-label="Close tag">
+                  {{ note.tags }}
+              </b-tag>
+          </b-field>
+          <h3 class="title is-4 mb-5" >{{note.title}}</h3>
+          <div class="mt-5" style="min-height: 90px">
+              {{getBody()}}
+          </div>
       </div>
       <div style="margin-left: 160px">
         <b-button type="is-link"
@@ -66,13 +68,20 @@ export default {
       if (str !== this.note.text) {
           this.editNoteAction({id: this.note.id, title: this.note.title, text: str, userId: this.note.userId, important: this.note.important, tags: this.note.tags})
       }
+    },
+    openFull() {
+      this.$buefy.dialog.alert({
+          title: this.note.title,
+          message: this.note.text,
+          confirmText: 'Cool!'
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-.red {
+.green {
   background-color: lightgreen;
 }
 </style>

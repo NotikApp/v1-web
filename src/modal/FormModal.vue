@@ -10,12 +10,12 @@
             </header>
             <section class="modal-card-body">
                 <b-field label="Title" label-position="on-border">
-                    <b-input v-model="title"></b-input>
+                    <b-input v-model="title" required></b-input>
                 </b-field>
 
                 <b-field label="Text"
                          label-position="on-border">
-                    <b-input maxlength="300" type="textarea" v-model="text"></b-input>
+                    <b-input maxlength="300" type="textarea" v-model="text" required></b-input>
                 </b-field>
 
                 <div style="display: flex">
@@ -23,12 +23,12 @@
                              label-position="on-border">
                         <b-input v-model="tag"></b-input>
                     </b-field>
-                    <b-button class="ml-2 is-success" @click="tagResult = tag; tag = ''">
+                    <b-button class="ml-2 is-success" @click="tagResult = tag; tag = ''" required>
                         Add tag
                     </b-button>
                 </div>
 
-                <b-field v-if="tagResult !== ''">
+                <b-field v-if="tagResult !== ''" required>
                     <b-tag attached
                            closable
                            aria-close-label="Delete"
@@ -38,7 +38,7 @@
                 </b-field>
 
                 <h6 class="title is-6 mb-3">Mark this note as important?</h6>
-                <b-field>
+                <b-field required>
                     <b-checkbox v-model="isImportant">
                         {{ isImportant }}
                     </b-checkbox>
@@ -80,6 +80,7 @@ export default {
                     title: 'Notik',
                     text: 'New note have been successfully posted!'
                 })
+                this.$emit('close')
             }
         }
     }

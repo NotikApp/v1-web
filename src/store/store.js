@@ -14,8 +14,8 @@ export default new Vuex.Store({
     },
     getters: {
         allNotes: state => (state.notes || []).sort((a, b) => -(a.id - b.id)),
-        getImportant: state => state.notes.filter(it => it.important),
-        getNotImportant: state => state.notes.filter(it => !it.important),
+        getImportant: state => (state.notes || []).filter(it => it.important),
+        getNotImportant: state =>(state.notes || []).filter(it => !it.important),
     },
     mutations: {
         addTokenMutation(state, token) {
@@ -25,9 +25,15 @@ export default new Vuex.Store({
             state.profile = profile
         },
         addNotesMutation(state, note) {
-            state.notes = [
-                ...state.notes, note
-            ]
+            if (!!!state.notes) {
+                state.notes = [
+                    note
+                ]
+            } else {
+                state.notes = [
+                    ...state.notes, note
+                ]
+            }
         },
         deleteMessageMutation(state, id) {
             const deletionIndex = state.notes.findIndex(item => item.id === id)
@@ -77,7 +83,6 @@ export default new Vuex.Store({
              commit('addNotesMutation', final)
         },
         async deleteNoteAction({commit, state}, note) {
-            console.log(`Bearer ${state.token}`)
             await Vue.http.delete(`${url}/api/notes/${note.id}`, {headers: {'Authorization': `Bearer ${state.token}`}}).then(resp => {}, resp => {
                 Vue.notify({
                     title: 'Deletion',
@@ -89,7 +94,6 @@ export default new Vuex.Store({
             commit('deleteMessageMutation', note.id)
         },
         async editNoteAction({commit, state}, note) {
-            console.log(`Bearer ${state.token}`)
             await Vue.http.put(`${url}/api/notes/${note.id}`, note, {headers: {'Authorization': `Bearer ${state.token}`}}).then(resp => {}, resp => {
                 Vue.notify({
                     title: 'Editing',
@@ -102,7 +106,6 @@ export default new Vuex.Store({
         },
         async initNotes({commit, state}) {
             let res
-            console.log(`Bearer ${state.token}`)
             await Vue.http.get(`${url}/api/notes`, {headers: {'Authorization': `Bearer ${state.token}`}}).then(resp => {
                 res = resp.body.data
             }, resp => {
@@ -111,6 +114,11 @@ export default new Vuex.Store({
                     text: `Status ${resp.status}: ${resp.body.message}`,
                     type: 'warn'
                 })
+
+                if (resp.status === 401) {
+                    localStorage.removeItem("notik_jwt")
+                    window.location.reload()
+                }
             })
 
             const final = await res

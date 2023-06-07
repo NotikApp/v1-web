@@ -1,24 +1,26 @@
 <template>
-  <div class="container" v-if="token !== null">
+  <div class="container mt-5" v-if="token !== null">
     <div style="display: flex; flex-direction: row; flex-wrap: wrap; transform: translateX(37px)" v-if="search !== ''">
         <note-card v-for="note in this.allNotes.filter(it => it.tags === search || it.tags.startsWith(search))"
                    :note="note"/>
     </div>
 
     <div style="display: flex; flex-direction: row; flex-wrap: wrap; transform: translateX(37px)" v-if="search === ''">
-      <note-card v-for="note in this.allNotes"
+      <note-card v-for="note in this.getImportant"
                  :note="note"/>
     </div>
-    <div class="text-divider" v-if="notes.length !== 0 && this.getNotImportant.length !== 0 && this.getImportant.length !== 0"/>
+
+    <div class="text-divider" v-if="this.getNotImportant.length !== 0 && this.getImportant.length !== 0"/>
     <div style="display: flex; flex-direction: row; flex-wrap: wrap; transform: translateX(37px)" v-if="search === ''">
-      <note-card v-for="note in this.allNotes.filter(it => !it.important)"
+      <note-card v-for="note in this.getNotImportant"
                  :note="note"/>
     </div>
+
   </div>
 
   <div class="container" v-else style="margin-top: 200px">
     <img
-        src="https://i.im.ge/2023/03/15/DqvHnq.noteik-logo.webp"
+        src="https://i.ibb.co/fS2mdmT/Dqv-Hnq-noteik-logo.png"
         alt="Notik"
         class="mt-6"
         style="margin: 0 auto; display: block"

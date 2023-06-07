@@ -25,7 +25,7 @@
                 </b-input>
             </b-field>
         </b-navbar-item>
-          <form-button/>
+        <form-button v-if="!!token"/>
       </template>
 
       <template #end v-if="!!!token">
